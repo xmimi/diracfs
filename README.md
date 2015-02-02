@@ -8,7 +8,7 @@ version : 2.1
 DIRAC release : v6r12p16
 Date : 27 Jan 2015
 
-correction duble // in old DIRAC
+correction double / of pathname in old DIRAC
 
 ------------------------
 version : 2.0
