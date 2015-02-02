@@ -18,7 +18,8 @@
 ########################################################################
 # diracfs is a simple file system for manipulation of DIRAC SE contents,  
 # based on fuse, origine for private usage. 
-# Function details see readme & release note 
+# 
+# See readme for details functions.
 #
 # Xiabo Li <li.xiabo@gmail.com>
 ########################################################################
