@@ -1,42 +1,42 @@
-enviroment :
+environment :
   test on sl5, sl6 64bit
-  python >= 2.6
+  python : 2.6, 2.7
+  dirac version : v6r12p16
 
 limitation :
   can not use touch cmd for creating a empty file, limited by dirac
 
 install:  
-  1) login as root
-     verify fuse installation
-        - yum install fuse fuse-python
-        - verify fuse module in kernel
-           lsmod | grep fuse
-        - if not in kernel, install it 
-           modprobe fuse 
-     create fuse group :
-        - verify fuse group exist
-           cut -d: -f1 /etc/group |grep fuse 
-        - if not, create it
-           group add fuse 
-        - add user to fuse group
-           usermod -a -G fuse username
-        - verify fuse group list
-           getent group fuse
-  2) login as user
-     copy diracfs.py
+  login as root
+  verify fuse installation
+    - yum install fuse fuse-python
+    - verify fuse module in kernel
+       lsmod | grep fuse
+    - if not in kernel, install it 
+       modprobe fuse 
+  create fuse group :
+    - verify fuse group exist
+       cut -d: -f1 /etc/group |grep fuse 
+    - if not, create it
+       group add fuse 
+    - add user to fuse group
+       usermod -a -G fuse <username>
+    - verify fuse group list
+       getent group fuse
 
-prepare environmentA :
-  have valide dirac proxy
+prepare environment :
+  have valid dirac proxy
 
   setenv PYTHONPATH $DIRAC:/usr/lib64/python2.6/site-packages
-  ou
+   or
   export PYTHONPATH=$DIRAC:/usr/lib64/python2.6/site-packages
 
-mount (ex. moun point is "test"):
-  mkdir test
-  python diracfs.py test
-   ou
-  python diracfs.py -d -f test    ==> for debugging
+mount (ex. mount point is <path>):
+  verify python/bin path
+  mkdir <path>
+  diracfs.py <path>
+   or
+  diracfs.py -d -f <path>    ==> for debugging
 
 umount :
-  fusermount -u test
+  fusermount -u <path>
