@@ -31,6 +31,7 @@ commands compatibility:
   cp [-r]  
   stat  
   chmod [-R]  
+  rsync
 
 ------------------------
 version 1.1  
