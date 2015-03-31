@@ -242,7 +242,8 @@ class DiracFS(fuse.Fuse):
 
     def statfs ( self ):
         print '*** statfs'
-        return -errno.ENOSYS
+        #return -errno.ENOSYS
+        return 0
 
     def symlink ( self, targetPath, linkPath ):
         print '*** symlink', targetPath, linkPath
