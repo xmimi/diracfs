@@ -4,6 +4,14 @@ but WITHOUT ANY WARRANTY.
 Author :  Xiabo Li <li.xiabo@gmail.com>
 
 -----------------------
+version : 2.2
+DIRAC release : v6r13p3
+Date : 25 Jun 2015
+
+change to adapte DIRAC v6r13p3
+change tmpdir organisation
+
+-----------------------
 version : 2.1  
 DIRAC release : v6r12p16  
 Date : 27 Jan 2015  
