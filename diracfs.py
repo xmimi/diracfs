@@ -24,11 +24,11 @@
 # Xiabo Li <li.xiabo@gmail.com>
 ########################################################################
   
-import stat, time, random, errno, os, fuse
+import stat, time, random, errno, os, fuse, atexit
 from DIRAC.Core.Base import Script
 Script.initialize()
 
-tmpdir = "/tmp/diracfs"
+tmpdir = "/tmp/diracfs_"+os.environ['LOGNAME']
   
 class DiracFS(fuse.Fuse):
     def __init__(self, *args, **kw):
@@ -160,8 +160,8 @@ class DiracFS(fuse.Fuse):
 
     def open ( self, path, flags ):
         print '*** open', path, flags
-	from DIRAC.DataManagementSystem.Client.ReplicaManager import ReplicaManager
-	result = ReplicaManager().getFile( path, destinationDir = self.tmpdir )
+	from DIRAC.DataManagementSystem.Client.DataManager import DataManager
+	result = DataManager().getFile( path, destinationDir = self.tmpdir )
 	if result["OK"]:
 	    self.file[path] = {"handler":os.tmpfile(),"modified":False}#,"mode":os.stat(path)[stat.ST_MODE]}
 	    self.file[path]["handler"].write(open(result["Value"]["Successful"][path],'rb').read())
@@ -208,15 +208,15 @@ class DiracFS(fuse.Fuse):
 
     def rename ( self, oldPath, newPath ):
         print '*** rename', oldPath, newPath
-        #return -errno.ENOSYS
-	from DIRAC.DataManagementSystem.Client.ReplicaManager import ReplicaManager
-	from DIRAC.DataManagementSystem.Client.FileCatalogClientCLI import FileCatalogClientCLI
-	from COMDIRAC.Interfaces import DCatalog
-        fcc = FileCatalogClientCLI( DCatalog().catalog )
-	result = ReplicaManager().getFile( oldPath, destinationDir = self.tmpdir )
-        fcc.do_rm(oldPath)
-	fcc.do_add( newPath+" "+self.tmpdir+"/"+oldPath.split('/')[-1]+" "+self.SE )
-	os.remove(self.tmpdir+'/'+oldPath.split('/')[-1])
+        return -errno.ENOSYS
+	#from DIRAC.DataManagementSystem.Client.ReplicaManager import ReplicaManager
+	#from DIRAC.DataManagementSystem.Client.FileCatalogClientCLI import FileCatalogClientCLI
+	#from COMDIRAC.Interfaces import DCatalog
+        #fcc = FileCatalogClientCLI( DCatalog().catalog )
+	#result = ReplicaManager().getFile( oldPath, destinationDir = self.tmpdir )
+        #fcc.do_rm(oldPath)
+	#fcc.do_add( newPath+" "+self.tmpdir+"/"+oldPath.split('/')[-1]+" "+self.SE )
+	#os.remove(self.tmpdir+'/'+oldPath.split('/')[-1])
 
 	#import shutil
 	#tmp = str(time.time())+str(random.random())
@@ -231,7 +231,7 @@ class DiracFS(fuse.Fuse):
 	#os.rename(oldPath, self.tmpdir+"/"+oldPath)
 	#os.rename(self.tmpdir+"/"+oldPath, newPath)
 	#os.rmdir(self.tmpdir+"/"+oldPath)
-        return 0
+        #return 0
 
     def rmdir ( self, path ):
         print '*** rmdir', path
@@ -299,3 +299,7 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+@atexit.register
+def goodbye():
+  os.rmdir(tmpdir)
