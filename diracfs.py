@@ -18,8 +18,7 @@
 ########################################################################
 # diracfs is a simple file system for manipulation of DIRAC SE contents,  
 # based on fuse, origine for private usage. 
-# 
-# See readme for details functions.
+# Function details see readme & release note 
 #
 # Xiabo Li <li.xiabo@gmail.com>
 ########################################################################
@@ -67,8 +66,8 @@ class DiracFS(fuse.Fuse):
 	    st.st_ino = 0
       	    st.st_dev = 0
       	    st.st_nlink = 1
-      	    st.st_uid = os.getuid() if md['Owner']==self.proxy['Value']['username'] else 999
-      	    st.st_gid = os.getgid() if md['OwnerGroup']==self.proxy['Value']['group'] else 999
+      	    st.st_uid = os.getuid() if md['Owner']==self.proxy['Value']['username'] else 65534
+      	    st.st_gid = os.getgid() if md['OwnerGroup']==self.proxy['Value']['group'] else 65534
       	    st.st_size = md['Size']
       	    st.st_atime = time.mktime(md['ModificationDate'].timetuple())
       	    st.st_mtime = time.mktime(md['ModificationDate'].timetuple())
@@ -81,8 +80,8 @@ class DiracFS(fuse.Fuse):
 	    st.st_ino = 0
       	    st.st_dev = 0
       	    st.st_nlink = 2
-      	    st.st_uid = os.getuid() if md['Owner']==self.proxy['Value']['username'] else 999
-      	    st.st_gid = os.getgid() if md['OwnerGroup']==self.proxy['Value']['group'] else 999
+      	    st.st_uid = os.getuid() if md['Owner']==self.proxy['Value']['username'] else 65534
+      	    st.st_gid = os.getgid() if md['OwnerGroup']==self.proxy['Value']['group'] else 65534
       	    st.st_size = 4096
       	    st.st_atime = time.mktime(md['ModificationDate'].timetuple())
       	    st.st_mtime = time.mktime(md['ModificationDate'].timetuple())
