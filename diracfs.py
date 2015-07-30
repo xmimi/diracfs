@@ -45,7 +45,7 @@ class DiracFS(fuse.Fuse):
 	from DIRAC.Resources.Catalog.FileCatalogClient import FileCatalogClient
 	self.result = FileCatalogClient().listDirectory(p,True)
 	st = fuse.Stat()
-	#print self.SE
+	#print "+++++++++++++++++++++ "+self.SE
 	#print p
 	#print self.proxy
 	#print self.result['Value']['Successful'][p]
@@ -301,4 +301,6 @@ if __name__ == '__main__':
 
 @atexit.register
 def goodbye():
-  os.rmdir(tmpdir)
+  #os.rmdir(tmpdir)
+  import shutil
+  shutil.rmtree(tmpdir)
