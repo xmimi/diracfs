@@ -293,6 +293,7 @@ def main(args):
         os.makedirs(tmpdir)
     server = DiracFS(version="%prog " + fuse.__version__,
                     usage=usage, dash_s_do='setsingle')
+    #server.fuse_args.add('allow_other')
     server.parser.add_option(mountopt="SE", metavar="Storage Element ID", default="DIRAC-USER", help="specify the used storage element [default: %default]")
     server.parse(values = server,errex=1)
 #    server.parse(errex=1)
