@@ -235,10 +235,16 @@ class DiracFS(fuse.Fuse):
 
     def rmdir ( self, path ):
         print '*** rmdir', path
-        from DIRAC.DataManagementSystem.Client.FileCatalogClientCLI import FileCatalogClientCLI
-        from COMDIRAC.Interfaces import DCatalog
-        FileCatalogClientCLI( DCatalog().catalog ).do_rmdir(path)
-        return 0
+        from DIRAC.Resources.Catalog.FileCatalogClient import FileCatalogClient
+        result = FileCatalogClient().listDirectory(path)
+        flist = result['Value']['Successful'][path]['Files'].keys()
+        if not flist:
+            from DIRAC.DataManagementSystem.Client.FileCatalogClientCLI import FileCatalogClientCLI
+            from COMDIRAC.Interfaces import DCatalog
+            FileCatalogClientCLI( DCatalog().catalog ).do_rmdir(path)
+            return 0
+        else:
+            return -errno.ENOTEMPTY
 
     def statfs ( self ):
         print '*** statfs'
